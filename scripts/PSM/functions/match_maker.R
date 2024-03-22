@@ -7,10 +7,10 @@ match_maker <- function() {
     library(mark)
     library(tidyr)
 
-    ifelse(file.exists("pest_matcher.csv"), check_date <- TRUE, c(check_date <- FALSE, run_code <- TRUE))
+    ifelse(file.exists("data/pest_matcher.csv"), check_date <- TRUE, c(check_date <- FALSE, run_code <- TRUE))
 
     if (check_date == TRUE) {
-        my_matcher <- read.csv("pest_matcher.csv")
+        my_matcher <- read.csv("data/pest_matcher.csv")
         pubdate <- readLines("https://www.blv.admin.ch/blv/de/home/zulassung-pflanzenschutzmittel/pflanzenschutzmittelverzeichnis.html")
         pubdate <- as.character(grep("Daten Pflanzen", pubdate, value = TRUE)) %>%
             str_extract_date(., format = "%d.%m.%Y")
@@ -38,7 +38,7 @@ match_maker <- function() {
             pest_matcher <- rbind(pest_matcher, foo)
         }
         pest_matcher$date <- Sys.Date()
-        write.csv(pest_matcher, "pest_matcher.csv", row.names = FALSE)
+        write.csv(pest_matcher, "data/pest_matcher.csv", row.names = FALSE)
         unlink("*.xml")
         unlink("*.xsd")
         unlink("*.zip")
