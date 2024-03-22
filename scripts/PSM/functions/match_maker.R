@@ -44,3 +44,9 @@ match_maker <- function() {
         unlink("*.zip")
     }
 }
+
+get_pest_ID <- function(pest_name){
+    pest_match_file <- read.csv("data/pest_matcher.csv")
+    key <- pest_match_file[pest_match_file$pest == pest_name, "key"]
+    return(key)
+}
