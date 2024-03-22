@@ -4,6 +4,7 @@
 get_psm_table_web <- function(organism_id){
   # input: organism id from blv, output df containing list of potential psm 
   require(rvest)
+  require(dplyr)
   #create link
   download_link <- paste0("https://www.psm.admin.ch/de/schaderreger/",
                           organism_id)
@@ -69,7 +70,7 @@ psm_dosage_and_regulations_adder <- function(psm_id, species = "Apfel" ){
 
 
 get_full_psm_info <- function(organism_id,species){
-  
+  # combine all information about psm
   psm_available <- get_psm_table_web(organism_id = organism_id)
   all_regulations <- list()
   all_psm_info <- list()
