@@ -1,6 +1,6 @@
 #' ---
 #' project: OFHD24    #####################################################
-#' title:   Boniture data aggregation
+#' title:   Bonitur data aggregation
 #' author:  Reto Zihlmann <retozihlmann@outlook.com>
 #' date:    2024-03-22 19:45:37
 #' output:  github_document   #############################################
@@ -46,6 +46,8 @@ agg_pest_counts <- pest_counts %>%
   group_by(bonitur_ID, plot, BBCH, pest, unit) %>% 
   summarise(count_pests = sum(pest_nr))
 
-  
-full_join(agg_binary_counts, agg_pest_counts) %>% 
-  left_join(pest_counts)
+agg_counts <- full_join(agg_binary_counts, agg_pest_counts) %>% 
+  left_join(total_counts) %>% 
+  select(bonitur_ID, plot, BBCH, pest, unit, nr_of_units_counted,
+         unit_infested, count_pests) %>% 
+  ungroup()
