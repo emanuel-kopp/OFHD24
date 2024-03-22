@@ -24,21 +24,25 @@ get_psm_table_web <- function(organism_id){
 }
 
 
-psm_dosage_and_regulations_adder <- function(psm_id, species = "Apfel" ){
+psm_dosage_and_regulations_adder <- function(psm_id, crop_species = "Apfel" ){
   # get infromation about the PSMs and the corresponding regulations
   require(rvest)
-  
   download_link <- paste0("https://www.psm.admin.ch/de/produkte/",psm_id)
   #read page
   webpage <- read_html(download_link)
   #get content of psm
   df_list <- webpage %>%
     html_table(fill = TRUE)
-  if(length(df_list)<3){
+  
+  if(length(df_list)<2){
+    return()
+  }
+  `%notin%` <- Negate(`%in%`)
+  if("Kultur" %notin% names(df_list[[2]])){
     return()
   }
   psm_df <- as.data.frame(df_list[[2]])
-  psm_df  <- subset(psm_df, Kultur == species)
+  psm_df  <- subset(psm_df, Kultur == crop_species)
   if(dim(psm_df)[1]<1){
     return()
   }
@@ -69,16 +73,17 @@ psm_dosage_and_regulations_adder <- function(psm_id, species = "Apfel" ){
 
 
 
-get_full_psm_info <- function(organism_id,species){
+get_full_psm_info <- function(organism_id,crop_species){
   # combine all information about psm
   psm_available <- get_psm_table_web(organism_id = organism_id)
   all_regulations <- list()
   all_psm_info <- list()
   
   for (psm in psm_available$Zulassungsnummer){
+
     one_psm <- subset(psm_available, Zulassungsnummer == psm )
     psm_add_info <- psm_dosage_and_regulations_adder(psm_id = psm,
-                                                     species = species)
+                                                     crop_species = crop_species)
     if(is.null(psm_add_info)){
       next
     }
@@ -94,6 +99,8 @@ get_full_psm_info <- function(organism_id,species){
                                        current_regulations)
     
   }
+  
+  
   all_psm_info_df <- do.call("rbind",all_psm_info)
   all_regulations_df <- do.call("rbind",all_regulations)
   
