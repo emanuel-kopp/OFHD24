@@ -12,6 +12,8 @@ ui <- page_sidebar(
     tags$title("Obstschädlinge"),
   ),
   
+  includeCSS("styles.css"),
+  
   title = "Obstschädlinge",
   
   sidebar = sidebar(
