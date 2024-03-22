@@ -64,7 +64,7 @@ psm_dosage_and_regulations_adder <- function(psm_id, species = "Apfel" ){
   
   
   return(out_list)
-
+  
 }
 
 
@@ -86,13 +86,13 @@ get_full_psm_info <- function(organism_id,species){
       psm_add_info$PSM_info) %in% c("Schaderreger/Wirkung", "Dosierungshinweise"
                                     ,"Auflagen" ))])
     
-
+    
     current_regulations <- as.numeric(unlist(strsplit(
-                psm_add_info$PSM_info$Auflagen, ", ")))
+      psm_add_info$PSM_info$Auflagen, ", ")))
     
     all_regulations[[psm]] <- subset(psm_add_info$Auflagen, Auflagen_number %in% 
                                        current_regulations)
-
+    
   }
   all_psm_info_df <- do.call("rbind",all_psm_info)
   all_regulations_df <- do.call("rbind",all_regulations)
