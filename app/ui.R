@@ -4,7 +4,7 @@
 # Bonitur Obstschädlinge
 # ---------------------------------------------------------------------------- #
 
-ui <- page_sidebar(
+ui <- page_navbar(
   id = "tabselected",
   fillable_mobile = TRUE,
   # Browser Tab title
@@ -24,9 +24,30 @@ ui <- page_sidebar(
     )
   ),
   
-  # Main
-  card(
-    card_header("Visuelle Kontrolle"),
-    uiOutput("card_ui"),
+  # Felderfassung ====
+  nav_panel(
+    title = "Felderfassung", value = 0,
+    card(
+      card_header("Visuelle Kontrolle"),
+      uiOutput("card_ui"),
+    )
+  ),
+  
+  # Spritzvorschlag ====
+  nav_panel(
+    title = "Spritzvorschlag",
+    card(
+      card_header("Spritzvorschlag"),
+      actionButton("show_poison", "Vorschlag für letzte Bonitur"),
+      dataTableOutput("table_poison")
+    )
+  ),
+  
+  # Auswertung ====
+  nav_panel(
+    title = "Auswertung", value = 0,
+    card(
+      card_header("Visuelle Kontrolle"),
+    )
   )
 )
