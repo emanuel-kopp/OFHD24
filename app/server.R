@@ -57,7 +57,7 @@ server <- function(input, output, session) {
     r_df$bonitur_pests$date[start:end] <- Sys.Date()
     r_df$bonitur_pests$unit_ID[start:end] <- r_arr$flower_counter
     r_df$bonitur_pests$pest[start:end] <- input$pests_checkbox_input
-    r_df$bonitur_pests$BBCH[start:end] <- input$bbch
+    r_df$bonitur_pests$BBCH[start:end] <- as.integer(input$bbch)
     print(r_df$bonitur_pests)
   })
   
@@ -69,23 +69,48 @@ server <- function(input, output, session) {
     end <- start + length(input$pests_checkbox_input) - 1
     r_df$bonitur_n_units[start:end, 1]  <- r_arr$bonitur_id
     r_df$bonitur_n_units$plot[start:end] <- input$orchard
-    r_df$bonitur_n_units$BBCH[start:end] <- input$bbch
+    r_df$bonitur_n_units$BBCH[start:end] <- as.integer(input$bbch)
     r_df$bonitur_n_units$date[start:end] <- Sys.Date()
+    r_df$bonitur_n_units$unit <- "Blütenbüschel"
     r_df$bonitur_n_units$nr_of_units_counted[start:end] <- r_arr$flower_counter
     print(r_df$bonitur_n_units)
     r_arr[["flower_counter"]] <- 0
+    write.csv(r_df$bonitur_n_units, "total_counts.csv", row.names = F)
+    write.csv(r_df$bonitur_pests, "pest_counts.csv", row.names = F)
   })
   
   # Observe show spritzvorschlag
   observeEvent(input$show_poison, {
+    print(str(r_df$bonitur_pests))
+    print(str(r_df$bonitur_pests))
+    df_threshold <- 
+      compare_against_threshold(r_df$bonitur_n_units, r_df$bonitur_pests, damage_threshold)
+    pests_to_treat <- df_threshold$pest[df_threshold$decision %in% c("above", "within")]
+    output_psm <- master_psm(pest_name = pests_to_treat[1], "Apfel")
     r_df$poison_table <- output_psm$alle_psm_infos$PSM_infos
   })
   
   output$table_poison <- renderDataTable({
     DT::datatable(
-      r_df$poison_table, style = "bootstrap4",
+      r_df$poison_table, style = "bootstrap4", rownames = F,
       options = list(
         language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json')))
+  })
+  
+  # Observe show 
+  observeEvent(input$table_poison_cell_selected, {
+    print("TEST")
+    req(input$table_poison_cell_selected)
+    # Selected row
+    r <- input$table_poison_cell_selected[1,1]
+    print(c)
+    if (grepl("\n", colnames(bv_all_table())[c])) {
+      showModal(modalDialog(
+        title = "Rohdaten pro Verfahren und Jahr", easyClose = T, size = "l",
+        fade = F, footer = modalButton("Schliessen"),
+        dataTableOutput("modal_table")
+      ))
+    }
   })
   
   # Reactive UI ====
@@ -96,7 +121,7 @@ server <- function(input, output, session) {
     out[[1]] <- selectInput("orchard", label = "Parzelle", 
                             choices = c("Hinterguggen", "Vorderluegen"))
     out[[2]] <- selectInput("bbch", label = "BBCH", 
-                            choices = c("58", "69"))
+                            choices = c("59", "69"))
     out[[3]] <- actionButton("start_bonitur", label = "Start", 
                              icon = icon("circle-play"))
     out

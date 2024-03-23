@@ -13,7 +13,7 @@ library(DT)
 # Function
 source("scripts/PSM/master_psm.R")
 
-output_psm <- master_psm("Apfelwickler", "Apfel")
+source("scripts/damage_threshold/00_fun_damage_threshold.R")
 
 # Read in data
 pests <- read.csv("https://obsty.nemundo.ch/schaedling/schaedling-csv", sep = ";")
