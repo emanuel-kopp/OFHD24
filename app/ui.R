@@ -43,13 +43,24 @@ ui <- page_navbar(
     )
   ),
   
-  # Auswertung ====
+  # Spritzvorschlag ====
   nav_panel(
-    title = "Auswertung", value = 0,
+    title = "Auswertung",
     card(
-      card_header("Visuelle Kontrolle"),
-      uiOutput("history"),
-      plotOutput("history_plot")
+      card_header("Auswertung"),
+      actionButton("show_history_pest", "Auswertung für ein Schadorganismum anzeigen"),
+      actionButton("show_history_bon", "Auswertung für eine Bonitur anzeigen"),
+      dataTableOutput("table_poison")
     )
-  )
+  ),
+  
+  # Auswertung ====
+#  nav_panel(
+#    title = "Auswertung", value = 0,
+#   card(
+#      card_header("Visuelle Kontrolle"),
+#      uiOutput("history"),
+#      plotOutput("history_plot")
+#    )
+#  )
 )
