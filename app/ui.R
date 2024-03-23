@@ -48,6 +48,7 @@ ui <- page_navbar(
     title = "Auswertung", value = 0,
     card(
       card_header("Visuelle Kontrolle"),
+      plotOutput("history_plot")
     )
   )
 )

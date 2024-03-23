@@ -142,4 +142,9 @@ server <- function(input, output, session) {
     }
   })
   
+  # Add history with plot
+  output$history_plot <- renderPlot({
+    make_example_plot("Apfelwickler")
+  })
+  
 }
