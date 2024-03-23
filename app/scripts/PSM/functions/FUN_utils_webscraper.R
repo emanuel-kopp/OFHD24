@@ -15,7 +15,13 @@ get_psm_table_web <- function(organism_id){
     html_table(fill = TRUE)
   output_df <- as.data.frame(df_list[[1]])
   
-  output_df$Zulassungsnummer <- gsub(".-","",output_df$Zulassungsnummer)
+  # output_df$Zulassungsnummer <- gsub(".-","",output_df$Zulassungsnummer,fixed = TRUE)
+  output_df$Zulassungsnummer <- substr(output_df$Zulassungsnummer, start=3,
+                                       stop=nchar(output_df$Zulassungsnummer))
+  
+
+  # browser()
+  strsplit(output_df$Zulassungsnummer,"-")
   output_df <- output_df[,-which(names(output_df) %in% c(
     "Parallelimport", "Nichtberufliche Verwendung"))]
   #return df
