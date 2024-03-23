@@ -32,3 +32,6 @@ colnames(bonitur_pests) <-
 bonitur_n_units <- as.data.frame(matrix(nrow = 0, ncol = 6))
 colnames(bonitur_n_units) <- 
   c("bonitur_ID", "date", "plot", "BBCH", "unit", "nr_of_units_counted")
+
+# Source function for history plot
+source("scripts/history/make_history_data.R")
