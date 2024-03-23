@@ -42,7 +42,7 @@ server <- function(input, output, session) {
   
   # Update value box
   output$flower_counter_value_box_ui <- renderUI({
-    value_box("Anzahl Blüten", value = r_arr$flower_counter)
+    value_box("Anzahl kontrollierte Einheiten", value = r_arr$flower_counter)
   })
   
   # Observe save pests
@@ -81,13 +81,17 @@ server <- function(input, output, session) {
   
   # Observe show spritzvorschlag
   observeEvent(input$show_poison, {
-    print(str(r_df$bonitur_pests))
-    print(str(r_df$bonitur_pests))
     df_threshold <- 
       compare_against_threshold(r_df$bonitur_n_units, r_df$bonitur_pests, damage_threshold)
     pests_to_treat <- df_threshold$pest[df_threshold$decision %in% c("above", "within")]
-    output_psm <- master_psm(pest_name = pests_to_treat[1], "Apfel")
-    r_df$poison_table <- output_psm$alle_psm_infos$PSM_infos
+    print(pests_to_treat)
+    if (length(pests_to_treat) > 0) {
+      output_psm <- master_psm(pest_name = pests_to_treat[1], "Apfel")
+      r_df$poison_table <- output_psm$alle_psm_infos$PSM_infos
+    } else {
+      r_df$poison_table <- as.data.frame(matrix(nrow = 0, ncol = 1))
+      colnames(r_df$poison_table) <- "Nichts zu spritzen!"
+    }
   })
   
   output$table_poison <- renderDataTable({
@@ -97,9 +101,8 @@ server <- function(input, output, session) {
         language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json')))
   })
   
-  # Observe show 
+  # Observe show poison 
   observeEvent(input$table_poison_cell_selected, {
-    print("TEST")
     req(input$table_poison_cell_selected)
     # Selected row
     r <- input$table_poison_cell_selected[1,1]
@@ -149,7 +152,8 @@ server <- function(input, output, session) {
     out[[3]] <- checkboxGroupInput(
       "pests_checkbox_input", label = "Vorhandene Schädlinge", 
       choiceValues = pests$schaedling, 
-      choiceNames = list_images_links)
+      choiceNames = lapply(list_images_links, function (f) { HTML(f) })
+      )
     out[[4]] <- actionButton("save_pests", label = "Weiter", 
                              icon = icon("floppy-disk"))
     out

@@ -17,10 +17,10 @@ source("scripts/damage_threshold/00_fun_damage_threshold.R")
 
 # Read in data
 pests <- read.csv("https://obsty.nemundo.ch/schaedling/schaedling-csv", sep = ";")
-bild <- pests %>% filter(grepl("png|jpg", bild))
+pests <- pests %>% filter(grepl("png|jpg", bild))
 
-list_images_links <- lapply(pests$bild, function(link) {
-  HTML(paste0("<img src='", link, "'/>"))
+list_images_links <- apply(pests, 1, function(v) {
+  HTML(paste0("<h3>", v[2], "</h3>", "<img src='", v[4], "'/>"))
 })
 
 # Emtpy data frame for results
