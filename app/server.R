@@ -86,7 +86,7 @@ server <- function(input, output, session) {
     pests_to_treat <- df_threshold$pest[df_threshold$decision %in% c("above", "within")]
     print(pests_to_treat)
     if (length(pests_to_treat) > 0) {
-      output_psm <- master_psm(pest_name = pests_to_treat[1], "Apfel")
+      output_psm <- master_psm(pest_name = pests_to_treat[1], "Kernobst")
       r_df$poison_table <- output_psm$alle_psm_infos$PSM_infos
     } else {
       r_df$poison_table <- as.data.frame(matrix(nrow = 0, ncol = 1))
