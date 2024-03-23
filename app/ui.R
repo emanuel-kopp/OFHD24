@@ -37,7 +37,7 @@ ui <- page_navbar(
             card(
               card_header("Spritzvorschlag"),
               actionButton("show_poison", "Vorschlag für letzte Bonitur"),
-              dataTableOutput("table_poison")
+              uiOutput("poison_ui")
             )),
   
   # Auswertung ====

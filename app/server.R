@@ -94,26 +94,25 @@ server <- function(input, output, session) {
     }
   })
   
+  output$poison_ui <- renderUI({
+    if (is.null(r_df$poison_table)) {
+      uiOutput("gif")
+    } else {
+      dataTableOutput("table_poison")
+    }
+  })
+  
+  output$gif <- renderUI({
+    fluidPage(
+      img(src="caterpillar_waiting.gif", align = "left")
+    )
+  })
+  
   output$table_poison <- renderDataTable({
     DT::datatable(
       r_df$poison_table, style = "bootstrap4", rownames = F,
       options = list(
         language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json')))
-  })
-  
-  # Observe show poison 
-  observeEvent(input$table_poison_cell_selected, {
-    req(input$table_poison_cell_selected)
-    # Selected row
-    r <- input$table_poison_cell_selected[1,1]
-    print(c)
-    if (grepl("\n", colnames(bv_all_table())[c])) {
-      showModal(modalDialog(
-        title = "Rohdaten pro Verfahren und Jahr", easyClose = T, size = "l",
-        fade = F, footer = modalButton("Schliessen"),
-        dataTableOutput("modal_table")
-      ))
-    }
   })
   
   # Reactive UI ====
