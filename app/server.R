@@ -14,6 +14,7 @@ server <- function(input, output, session) {
   r_df <- reactiveValues()
   r_df[["bonitur_pests"]] <- bonitur_pests
   r_df[["bonitur_n_units"]] <- bonitur_n_units
+  r_df[["poison_table"]] <- NULL
   
   # Actions ====
   
@@ -53,6 +54,7 @@ server <- function(input, output, session) {
     r_df$bonitur_pests[start:end, 1] <- r_arr$bonitur_id
     r_df$bonitur_pests$plot[start:end] <- input$orchard
     r_df$bonitur_pests$unit[start:end] <- "Blütenbüschel"
+    r_df$bonitur_pests$date[start:end] <- Sys.Date()
     r_df$bonitur_pests$unit_ID[start:end] <- r_arr$flower_counter
     r_df$bonitur_pests$pest[start:end] <- input$pests_checkbox_input
     r_df$bonitur_pests$BBCH[start:end] <- input$bbch
@@ -68,9 +70,22 @@ server <- function(input, output, session) {
     r_df$bonitur_n_units[start:end, 1]  <- r_arr$bonitur_id
     r_df$bonitur_n_units$plot[start:end] <- input$orchard
     r_df$bonitur_n_units$BBCH[start:end] <- input$bbch
+    r_df$bonitur_n_units$date[start:end] <- Sys.Date()
     r_df$bonitur_n_units$nr_of_units_counted[start:end] <- r_arr$flower_counter
     print(r_df$bonitur_n_units)
     r_arr[["flower_counter"]] <- 0
+  })
+  
+  # Observe show spritzvorschlag
+  observeEvent(input$show_poison, {
+    r_df$poison_table <- output_psm$alle_psm_infos$PSM_infos
+  })
+  
+  output$table_poison <- renderDataTable({
+    DT::datatable(
+      r_df$poison_table, style = "bootstrap4",
+      options = list(
+        language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json')))
   })
   
   # Reactive UI ====
@@ -108,10 +123,8 @@ server <- function(input, output, session) {
     out[[2]] <- card_title("Welche Schädlinge sind vorhanden?")
     out[[3]] <- checkboxGroupInput(
       "pests_checkbox_input", label = "Vorhandene Schädlinge", 
-      choiceValues = pests$schaedling[1:3], 
-      choiceNames = c(list(HTML("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Cydia.pomonella.7162.jpg/2560px-Cydia.pomonella.7162.jpg'/>")),
-                      list(HTML("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Cydia.pomonella.7162.jpg/2560px-Cydia.pomonella.7162.jpg'/>")),
-                      list(HTML("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Cydia.pomonella.7162.jpg/2560px-Cydia.pomonella.7162.jpg'/>"))))
+      choiceValues = pests$schaedling, 
+      choiceNames = list_images_links)
     out[[4]] <- actionButton("save_pests", label = "Weiter", 
                              icon = icon("floppy-disk"))
     out
