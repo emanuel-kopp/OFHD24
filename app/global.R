@@ -35,3 +35,4 @@ colnames(bonitur_n_units) <-
 
 # Source function for history plot
 source("scripts/history/make_history_data.R")
+source("scripts/history/plot_one_bonitur.R")
