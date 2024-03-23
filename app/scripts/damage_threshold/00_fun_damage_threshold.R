@@ -13,7 +13,7 @@
 library(dplyr)
 
 
-readRDS("app/data/damage_threshold.rds")
+damage_threshold <- readRDS("data/damage_threshold.rds")
 
 # Function ----------------------------------------------------------------
 
