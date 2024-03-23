@@ -29,7 +29,7 @@ ui <- page_navbar(
     title = "Felderfassung", value = 0,
     card(
       card_header("Visuelle Kontrolle"),
-      uiOutput("card_ui"),
+      uiOutput("card_ui")
     )
   ),
   
@@ -48,6 +48,7 @@ ui <- page_navbar(
     title = "Auswertung", value = 0,
     card(
       card_header("Visuelle Kontrolle"),
+      uiOutput("history"),
       plotOutput("history_plot")
     )
   )
