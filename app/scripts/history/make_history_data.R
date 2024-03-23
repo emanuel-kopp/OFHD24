@@ -1,7 +1,6 @@
 
 
 make_example_plot <- function(pest_name) {
-  library(xlsx)
   library(ggplot2)
   
   
