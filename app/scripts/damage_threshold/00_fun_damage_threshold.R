@@ -9,10 +9,11 @@
 
 # Packages ----------------------------------------------------------------
 
-library(magrittr,warn.conflicts = F); library(tidyverse,warn.conflicts = F)
+# library(magrittr,warn.conflicts = F); library(tidyverse,warn.conflicts = F)
+library(dplyr)
 
 
-read_rds("app/data/damage_threshold.rds")
+readRDS("app/data/damage_threshold.rds")
 
 # Function ----------------------------------------------------------------
 
