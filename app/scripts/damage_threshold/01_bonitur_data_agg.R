@@ -16,8 +16,8 @@ library(readxl)
 
 # Read Data ---------------------------------------------------------------
 
-total_counts <- read_excel("data/sample_data.xlsx", sheet = "total_counts")
-pest_counts <- read_excel("data/sample_data.xlsx", sheet = "pest_counts")
+total_counts <- read_excel("app/data/sample_data.xlsx", sheet = "total_counts")
+pest_counts <- read_excel("app/data/sample_data.xlsx", sheet = "pest_counts")
 
 
 # Unit Tests --------------------------------------------------------------
@@ -51,3 +51,4 @@ agg_counts <- full_join(agg_binary_counts, agg_pest_counts) %>%
   select(bonitur_ID, plot, BBCH, pest, unit, nr_of_units_counted,
          unit_infested, count_pests) %>% 
   ungroup()
+
