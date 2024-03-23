@@ -19,6 +19,8 @@ source("scripts/damage_threshold/00_fun_damage_threshold.R")
 pests <- read.csv("https://obsty.nemundo.ch/schaedling/schaedling-csv", sep = ";")
 pests <- pests %>% filter(grepl("png|jpg", bild))
 
+stadien <- read.csv("https://obsty.nemundo.ch/entwicklungsstadium/entwicklungsstadium-csv", sep = ";")
+
 list_images_links <- apply(pests, 1, function(v) {
   HTML(paste0("<h3>", v[2], "</h3>", "<img src='", v[4], "'/>"))
 })

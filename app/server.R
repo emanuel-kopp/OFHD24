@@ -124,7 +124,7 @@ server <- function(input, output, session) {
     out[[1]] <- selectInput("orchard", label = "Parzelle", 
                             choices = c("Hinterguggen", "Vorderluegen"))
     out[[2]] <- selectInput("bbch", label = "BBCH", 
-                            choices = c("59", "69"))
+                            choices = stadien$nummer, selected = "59")
     out[[3]] <- actionButton("start_bonitur", label = "Start", 
                              icon = icon("circle-play"))
     out
