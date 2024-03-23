@@ -142,9 +142,17 @@ server <- function(input, output, session) {
     }
   })
   
-  # Add history with plot
-  output$history_plot <- renderPlot({
-    make_example_plot("Apfelwickler")
+  
+  # Chose pest for history plot
+  output$history <- renderUI({
+    out <- tagList()
+    out[[1]] <- selectInput("pest", label = "Parzelle", 
+                            choices = c("Apfelwickler", "Apfelblütenstecher"))
+    out
   })
   
+  # Add history with plot
+  output$history_plot <- renderPlot({
+    make_example_plot(input$pest)
+  })
 }
