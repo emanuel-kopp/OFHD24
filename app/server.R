@@ -171,13 +171,24 @@ server <- function(input, output, session) {
   # Chose pest for history plot
   output$history <- renderUI({
     out <- tagList()
-    out[[1]] <- selectInput("pest", label = "Parzelle", 
-                            choices = c("Apfelwickler", "Apfelblütenstecher"))
-    out
-  })
+    if (input$history_type == "pest") {
+      out[[1]] <- selectInput("pest", label = "Parzelle", 
+                              choices = c("Apfelwickler", "Apfelblütenstecher"))
+      out
+    } else if (input$history_type == "bonitur") {
+      out[[1]] <- selectInput("pest", label = "Parzelle", 
+                              choices = c("Bonitur 1", "Bonitur 2"))
+      out
+    }
+    })
   
   # Add history with plot
   output$history_plot <- renderPlot({
-    make_example_plot(input$pest)
+    if (grepl("Bonitur", input$pest)) {
+      bon_num <- as.numeric(gsub("\\D", "", input$pest))
+      make_example_plot_one_rating(bon_num)
+    } else {
+      make_example_plot(input$pest)
+    }
   })
 }
