@@ -45,8 +45,8 @@ ui <- page_navbar(
     title = "Auswertung",
     value = 0,
     card(
-      card_header("Visuelle Kontrolle"),
-      radioButtons("history_type", label = "TITLE",
+      card_header("Auswertung"),
+      radioButtons("history_type", label = "",
                    choices = c("Auswertung nach Schadorganismus anzeigen" = "pest",
                                "Auswertung nach Bonitur anzeigen" = "bonitur")),
       uiOutput("history"),
